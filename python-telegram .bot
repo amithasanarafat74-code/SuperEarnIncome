@@ -1,0 +1,24 @@
+# bot.py (Python-telegram-bot)
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, ContextTypes
+
+BOT_TOKEN = '8736211362:AAHEx8XjaXZoGHU2lTemjD5fKYC9w492CuU'
+
+def start(update: Update, context: ContextTypes):
+    ref_code = context.args[0] if context.args else None
+    web_app_url = f"https://your-app.onrender.com?startapp={ref_code}" if ref_code else "https://your-app.onrender.com"
+    
+    update.message.reply_text(
+        f"Welcome to SuperEarn BD!\n\n"
+        f"Click below to open the app:",
+        reply_markup={
+            'inline_keyboard': [[{
+                'text': 'Open App',
+                'web_app': {'url': web_app_url}
+            }]]
+        }
+    )
+
+updater = Updater(BOT_TOKEN)
+updater.dispatcher.add_handler(CommandHandler('start', start))
+updater.start_polling()
